@@ -74,7 +74,7 @@ impl<'a> FullName<'a> {
 		buf.reserve(SIZE);
 		let len = unsafe {
 			crate::ffi::DNSServiceConstructFullName(
-				buf.as_mut_ptr() as *mut i8,
+				buf.as_mut_ptr() as *mut _,
 				service.as_ptr(),
 				reg_type.as_ptr(),
 				domain.as_ptr(),
