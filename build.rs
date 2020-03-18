@@ -1,7 +1,6 @@
 use autotools::Config;
 use std::env;
 use std::env::{var, var_os};
-use std::process::Command;
 
 fn cfg_arch() -> String {
 	var("CARGO_CFG_TARGET_ARCH").expect("couldn't find target architecture")
