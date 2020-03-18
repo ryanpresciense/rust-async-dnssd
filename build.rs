@@ -56,7 +56,6 @@ fn from_source() {
 		)
 		.disable_shared()
 		.enable_static()
-		.enable("client", None)
 		.enable("compat-libdns_sd", None)
 		.disable("glib", None)
 		.disable("gobject", None)
@@ -78,8 +77,7 @@ fn from_source() {
 		.disable("autoipd", None)
 		.disable("manpages", None)
 		.disable("xmltoman", None)
-		.insource(true)
-		.env("CROSS", std::env::var("TARGET").unwrap())
+		.env("CROSS", std::env::var("TARGET").unwrap_or("".to_owned()))
 		.env("CC", std::env::var("RUSTC_LINKER").unwrap_or("".to_owned()))
 		.build();
 
