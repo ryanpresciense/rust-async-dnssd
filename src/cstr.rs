@@ -1,10 +1,4 @@
-use std::{
-	borrow::Cow,
-	ffi,
-	io,
-	os::raw::c_char,
-	ptr::null,
-};
+use std::{borrow::Cow, ffi, io, os::raw::c_char, ptr::null};
 
 pub unsafe fn from_cstr(s: *const c_char) -> io::Result<&'static str> {
 	ffi::CStr::from_ptr(s)

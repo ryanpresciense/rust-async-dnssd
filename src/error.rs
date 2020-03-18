@@ -1,8 +1,4 @@
-use std::{
-	error,
-	fmt,
-	io,
-};
+use std::{error, fmt, io};
 
 use crate::ffi;
 
@@ -42,7 +38,7 @@ impl From<Error> for io::Error {
 	fn from(e: Error) -> Self {
 		match e {
 			Error::IoError(e) => e,
-			e => io::Error::new(io::ErrorKind::Other, e)
+			e => io::Error::new(io::ErrorKind::Other, e),
 		}
 	}
 }
@@ -65,8 +61,7 @@ impl fmt::Display for Error {
 		}
 	}
 }
-impl error::Error for Error {
-}
+impl error::Error for Error {}
 
 impl fmt::Display for ffi::DNSServiceError {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {

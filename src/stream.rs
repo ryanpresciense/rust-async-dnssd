@@ -1,22 +1,12 @@
-use futures::{
-	channel::mpsc,
-	prelude::*,
-};
+use futures::{channel::mpsc, prelude::*};
 use std::{
 	io,
 	os::raw::c_void,
 	pin::Pin,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 
-use crate::{
-	error::Error,
-	ffi,
-	inner::EventedService,
-};
+use crate::{error::Error, ffi, inner::EventedService};
 
 #[allow(clippy::borrowed_box)]
 fn box_raw<T>(ptr: &mut Box<T>) -> *mut c_void {
@@ -33,8 +23,11 @@ pub(crate) struct ServiceStream<S: EventedService, T> {
 }
 
 impl<S: EventedService, T> ServiceStream<S, T> {
-	pub(crate) unsafe fn run_callback<F>(context: *mut c_void, error_code: ffi::DNSServiceErrorType, f: F)
-	where
+	pub(crate) unsafe fn run_callback<F>(
+		context: *mut c_void,
+		error_code: ffi::DNSServiceErrorType,
+		f: F,
+	) where
 		F: FnOnce() -> io::Result<T>,
 		T: ::std::fmt::Debug,
 	{

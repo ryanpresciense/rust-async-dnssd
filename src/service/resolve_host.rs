@@ -1,40 +1,17 @@
 use std::{
-	fmt,
-	io,
-	net::{
-		IpAddr,
-		Ipv4Addr,
-		Ipv6Addr,
-		SocketAddr,
-		SocketAddrV4,
-		SocketAddrV6,
-	},
+	fmt, io,
+	net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr, SocketAddrV4, SocketAddrV6},
 	pin::Pin,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 
-use futures::{
-	prelude::*,
-	stream,
-	Stream,
-};
+use futures::{prelude::*, stream, Stream};
 
 use crate::{
-	dns_consts::{
-		Class,
-		Type,
-	},
+	dns_consts::{Class, Type},
 	ffi,
 	interface::Interface,
-	service::{
-		query_record_extended,
-		QueryRecordData,
-		QueryRecordFlags,
-		QueryRecordResult,
-	},
+	service::{query_record_extended, QueryRecordData, QueryRecordFlags, QueryRecordResult},
 };
 
 fn decode_a(a: QueryRecordResult, port: u16) -> Option<ResolveHostResult> {
@@ -179,7 +156,7 @@ impl Into<SocketAddr> for ScopedSocketAddr {
 			ScopedSocketAddr::V4 { address, port, .. } => {
 				// doesn't use scope_id
 				SocketAddr::V4(SocketAddrV4::new(address, port))
-			},
+			}
 			ScopedSocketAddr::V6 {
 				address,
 				port,

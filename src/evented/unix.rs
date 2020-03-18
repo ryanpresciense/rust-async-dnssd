@@ -2,10 +2,7 @@ use mio;
 use std::{
 	io,
 	os::raw::c_int,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 use tokio::io::PollEvented;
 

@@ -39,9 +39,10 @@ fn find_windows_dns_sd() {
 }
 
 fn from_source() {
-  let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+	let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
 	let avahi_dir = format!("{}/avahi", crate_dir);
 
+	build_deps::rerun_if_changed_paths(&format!("{}/*", avahi_dir)).unwrap();
 	let dst = Config::new(&avahi_dir)
 		.reconf("-ivf")
 		.with("xml", Some("none"))
@@ -55,6 +56,7 @@ fn from_source() {
 		)
 		.disable_shared()
 		.enable_static()
+		.enable("client", None)
 		.enable("compat-libdns_sd", None)
 		.disable("glib", None)
 		.disable("gobject", None)
@@ -76,29 +78,27 @@ fn from_source() {
 		.disable("autoipd", None)
 		.disable("manpages", None)
 		.disable("xmltoman", None)
-    .insource(true)
-    .env("CC",std::env::var("RUSTC_LINKER").unwrap())
+		.insource(true)
+		.env("CROSS", std::env::var("TARGET").unwrap())
+		.env("CC", std::env::var("RUSTC_LINKER").unwrap_or("".to_owned()))
 		.build();
 
-	build_deps::rerun_if_changed_paths(&format!("{}/*", avahi_dir)).unwrap();
-	println!("cargo:rustc-link-search=native={}/lib", avahi_dir);
-	println!("cargo:rustc-link-search=native={}/out/lib", dst.display());
 	println!("cargo:rustc-link-search=native={}/lib", dst.display());
 	println!("cargo:rustc-link-search=native={}", dst.display());
-	println!("cargo:rustc-link-lib=static=avahi-core.a");
-	println!("cargo:rustc-link-lib=static=avahi-common.a");
+	println!("cargo:rustc-link-lib=static=avahi-core");
+	println!("cargo:rustc-link-lib=static=avahi-common");
 }
 
 fn from_pkgconfig() {
-	  find_avahi_compat_dns_sd();
-	  find_windows_dns_sd();
+	find_avahi_compat_dns_sd();
+	find_windows_dns_sd();
 }
 
 pub fn main() {
 	println!("cargo:rerun-if-changed=build.rs");
-  if cfg!(feature="vendored") {
-        from_source()
-    } else {
-        from_pkgconfig()
-  }
+	if cfg!(feature = "vendored") {
+		from_source()
+	} else {
+		from_pkgconfig()
+	}
 }

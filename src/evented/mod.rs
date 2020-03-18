@@ -10,10 +10,7 @@ mod windows;
 
 use std::{
 	io,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 
 pub(crate) struct ReadProcessor {
@@ -40,7 +37,7 @@ impl ReadProcessor {
 					p()?;
 				}
 				self.poll.clear_read_ready(cx)?;
-			},
+			}
 			Poll::Pending => (),
 		}
 		Ok(())

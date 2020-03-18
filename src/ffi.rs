@@ -1,10 +1,6 @@
 // #![allow(dead_code)]
 
-use std::os::raw::{
-	c_char,
-	c_int,
-	c_void,
-};
+use std::os::raw::{c_char, c_int, c_void};
 
 // type without an instance
 pub enum DNSServiceT {}

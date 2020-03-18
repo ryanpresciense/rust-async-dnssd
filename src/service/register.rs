@@ -1,23 +1,11 @@
 use std::{
 	io,
-	os::raw::{
-		c_char,
-		c_void,
-	},
+	os::raw::{c_char, c_void},
 	pin::Pin,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 
-use crate::{
-	cstr,
-	dns_consts::Type,
-	ffi,
-	inner,
-	interface::Interface,
-};
+use crate::{cstr, dns_consts::Type, ffi, inner, interface::Interface};
 
 type CallbackFuture = crate::future::ServiceFuture<inner::SharedService, RegisterResult>;
 

@@ -1,30 +1,18 @@
 #![allow(clippy::too_many_arguments)]
 
-use futures::{
-	lock,
-	prelude::*,
-};
+use futures::{lock, prelude::*};
 use libc::c_void;
 use std::{
 	io,
 	pin::Pin,
 	ptr::null_mut,
-	sync::{
-		Arc,
-		Mutex,
-	},
-	task::{
-		Context,
-		Poll,
-	},
+	sync::{Arc, Mutex},
+	task::{Context, Poll},
 };
 
 use crate::{
 	cstr,
-	dns_consts::{
-		Class,
-		Type,
-	},
+	dns_consts::{Class, Type},
 	error::Error,
 	ffi,
 };
@@ -250,7 +238,7 @@ impl EventedService for SharedService {
 				Poll::Pending => return Ok(()),
 				Poll::Ready(g) => {
 					self.lock_state = SharedLockState::Locked(g);
-				},
+				}
 			}
 		}
 		if let SharedLockState::Locked(guard) = &mut self.lock_state {

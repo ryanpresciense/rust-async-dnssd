@@ -2,10 +2,7 @@ use futures::prelude::*;
 use std::{
 	io,
 	pin::Pin,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 	time::Duration,
 };
 
@@ -89,7 +86,7 @@ impl<S: TryStream> Stream for TimeoutStream<S> {
 				// not end of stream: reset timeout
 				self.reset_timer();
 				Poll::Ready(Some(Ok(item)))
-			},
+			}
 			Poll::Ready(Some(Err(e))) => Poll::Ready(Some(Err(e))),
 			Poll::Pending => {
 				// check timeout
@@ -99,11 +96,11 @@ impl<S: TryStream> Stream for TimeoutStream<S> {
 						// not an error
 						Poll::Ready(None)
 						// Err(TimeoutStreamError::Timeout)
-					},
+					}
 					// still time left
 					Poll::Pending => Poll::Pending,
 				}
-			},
+			}
 		}
 	}
 }

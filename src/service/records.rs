@@ -1,9 +1,6 @@
 use std::io;
 
-use crate::{
-	dns_consts::Type,
-	inner,
-};
+use crate::{dns_consts::Type, inner};
 
 /// A successful record registration
 ///

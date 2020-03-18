@@ -1,12 +1,6 @@
 pub use self::{
-	browse::*,
-	connection::*,
-	enumerate_domains::*,
-	query_record::*,
-	records::Record,
-	register::*,
-	resolve::*,
-	resolve_host::*,
+	browse::*, connection::*, enumerate_domains::*, query_record::*, records::Record, register::*,
+	resolve::*, resolve_host::*,
 };
 
 mod browse;
@@ -18,10 +12,7 @@ mod register;
 mod resolve;
 mod resolve_host;
 
-use crate::dns_consts::{
-	Class,
-	Type,
-};
+use crate::dns_consts::{Class, Type};
 
 /// Purge record from cache
 ///

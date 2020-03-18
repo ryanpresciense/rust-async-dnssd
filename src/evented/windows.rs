@@ -14,20 +14,14 @@
 //! we'd have to try the loopback TCP connection to wake it and fall
 //! back to a smaller timeout.
 
-use futures::{
-	channel::mpsc as futures_mpsc,
-	prelude::*,
-};
+use futures::{channel::mpsc as futures_mpsc, prelude::*};
 use log::debug;
 use std::{
 	io,
 	os::raw::c_int,
-	sync::Mutex,
 	sync::mpsc as std_mpsc,
-	task::{
-		Context,
-		Poll,
-	},
+	sync::Mutex,
+	task::{Context, Poll},
 	thread,
 	time::Duration,
 };
@@ -113,11 +107,11 @@ impl Inner {
 				debug!("poll read: thread ready");
 				self.pending_request = false;
 				Poll::Ready(Ok(()))
-			},
+			}
 			Poll::Pending => {
 				debug!("poll read: thread not ready");
 				Poll::Pending
-			},
+			}
 		}
 	}
 
@@ -131,13 +125,15 @@ impl Inner {
 				assert!(self.pending_request);
 				// try again - can't be ready again, but register context
 				match self.recv_response.poll_next_unpin(cx) {
-					Poll::Ready(None) => unreachable!(), // can't be disconnected
+					Poll::Ready(None) => unreachable!(),     // can't be disconnected
 					Poll::Ready(Some(())) => unreachable!(), // no one could have sent this
 					Poll::Pending => (),
 				}
 				// now send a response - it was ready after all
-				self.send_response.try_send(()).expect("channel can't be full or disconnected");
-			},
+				self.send_response
+					.try_send(())
+					.expect("channel can't be full or disconnected");
+			}
 			Poll::Pending => {
 				// yay!
 				//
@@ -149,7 +145,9 @@ impl Inner {
 					if read_fds.select(Some(Duration::from_millis(0))) {
 						debug!("poll need read: local ready");
 						// ready, send a response
-						self.send_response.try_send(()).expect("channel can't be full or disconnected");
+						self.send_response
+							.try_send(())
+							.expect("channel can't be full or disconnected");
 					} else {
 						debug!("poll need read: not ready, start thread");
 						self.send_request
@@ -157,7 +155,7 @@ impl Inner {
 							.expect("select thread terminated");
 					}
 				}
-			},
+			}
 		}
 		Ok(())
 	}
@@ -224,25 +222,19 @@ impl PollReadFd {
 
 impl Drop for PollReadFd {
 	fn drop(&mut self) {
-		let _ = self.0.get_mut().expect("mutex poisoned").send_request.send(PollRequest::Close);
+		let _ = self
+			.0
+			.get_mut()
+			.expect("mutex poisoned")
+			.send_request
+			.send(PollRequest::Close);
 	}
 }
 
 mod fd_set {
-	use libc::{
-		c_int,
-		c_uint,
-	};
-	use std::{
-		mem::MaybeUninit,
-		ptr,
-	};
-	use winapi::um::winsock2::{
-		fd_set,
-		u_int,
-		FD_SETSIZE,
-		SOCKET,
-	};
+	use libc::{c_int, c_uint};
+	use std::{mem::MaybeUninit, ptr};
+	use winapi::um::winsock2::{fd_set, u_int, FD_SETSIZE, SOCKET};
 
 	/// Layout compatible struct of `fd_set`, but it holds maybe uninitialized `fd_array`.
 	///
@@ -295,10 +287,7 @@ mod fd_set {
 	#[cfg(test)]
 	mod tests {
 		use super::*;
-		use std::mem::{
-			needs_drop,
-			transmute,
-		};
+		use std::mem::{needs_drop, transmute};
 
 		// Check that `FdSet` is layout compatible with `fd_set`.
 		#[test]

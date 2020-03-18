@@ -1,25 +1,15 @@
-use futures::{self,};
+use futures::{self};
 use std::{
 	io,
-	os::raw::{
-		c_char,
-		c_void,
-	},
+	os::raw::{c_char, c_void},
 	pin::Pin,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 
 use crate::{
 	cstr,
-	dns_consts::{
-		Class,
-		Type,
-	},
-	ffi,
-	inner,
+	dns_consts::{Class, Type},
+	ffi, inner,
 	interface::Interface,
 };
 

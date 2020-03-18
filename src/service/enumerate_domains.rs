@@ -1,23 +1,12 @@
-use futures::{self,};
+use futures::{self};
 use std::{
 	io,
-	os::raw::{
-		c_char,
-		c_void,
-	},
+	os::raw::{c_char, c_void},
 	pin::Pin,
-	task::{
-		Context,
-		Poll,
-	},
+	task::{Context, Poll},
 };
 
-use crate::{
-	cstr,
-	ffi,
-	inner,
-	interface::Interface,
-};
+use crate::{cstr, ffi, inner, interface::Interface};
 
 type CallbackStream = crate::stream::ServiceStream<inner::OwnedService, EnumerateResult>;
 

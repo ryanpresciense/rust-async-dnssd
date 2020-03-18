@@ -1,13 +1,6 @@
-use async_dnssd::{
-	StreamTimeoutExt,
-	TxtRecord,
-	ResolvedHostFlags,
-};
+use async_dnssd::{ResolvedHostFlags, StreamTimeoutExt, TxtRecord};
 use futures::prelude::*;
-use std::{
-	env,
-	time::Duration,
-};
+use std::{env, time::Duration};
 use tokio::spawn;
 
 #[tokio::main(basic_scheduler)]
@@ -74,7 +67,7 @@ async fn main() {
 						Err(e) => {
 							println!("resolve failed: {:?}", e);
 							return;
-						},
+						}
 					}
 					.timeout(resolve_timeout)
 					.expect("failed timeout");
@@ -112,7 +105,10 @@ async fn main() {
 										.timeout(address_timeout)?
 										.try_for_each(move |result| {
 											if result.flags.intersects(ResolvedHostFlags::ADD) {
-												println!("Address for {}: {}", fullname, result.address);
+												println!(
+													"Address for {}: {}",
+													fullname, result.address
+												);
 											}
 											futures::future::ok(())
 										})
