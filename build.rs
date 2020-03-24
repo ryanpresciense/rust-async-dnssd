@@ -46,15 +46,8 @@ fn from_source() {
 		.reconf("-ivf")
 		.with("xml", Some("none"))
 		.with(
-			"distro",
-			if cfg!(osx) {
-				Some("darwin")
-			} else {
 				Some("none")
-			},
 		)
-		.disable_shared()
-		.enable_static()
 		.enable("compat-libdns_sd", None)
 		.disable("glib", None)
 		.disable("gobject", None)
