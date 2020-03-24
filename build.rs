@@ -94,9 +94,10 @@ fn from_pkgconfig() {
 
 pub fn main() {
 	println!("cargo:rerun-if-changed=build.rs");
-	if cfg!(feature = "vendored") {
-		from_source()
+        if cfg!(target_os = "macos") {
+		  from_pkgconfig()
 	} else {
-		from_pkgconfig()
+		  from_source()
 	}
+
 }
