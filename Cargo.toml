@@ -13,8 +13,6 @@ keywords = ["dnssd", "dns-sd", "mdns", "network", "async"]
 license = "MIT"
 edition = "2018"
 
-[features]
-vendored = []
 
 [build-dependencies]
 autotools= "0.2.1"
