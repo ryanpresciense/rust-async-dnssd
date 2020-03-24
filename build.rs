@@ -46,7 +46,7 @@ fn from_source() {
 		.reconf("-ivf")
 		.with("xml", Some("none"))
 		.with(
-				Some("none")
+				"distro",Some("none")
 		)
 		.enable("compat-libdns_sd", None)
 		.disable("glib", None)
@@ -86,7 +86,7 @@ fn from_pkgconfig() {
 
 pub fn main() {
 	println!("cargo:rerun-if-changed=build.rs");
-        if cfg!(target_os = "macos") {
+  if cfg!(target_os = "macos") {
 		  from_pkgconfig()
 	} else {
 		  from_source()
